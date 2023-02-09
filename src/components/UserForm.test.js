@@ -13,11 +13,9 @@ test("it shows two inputs and a button", () => {
 });
 
 test("it calls onUserAdd when the form is submitted", () => {
-  const argList = [];
-  const callback = (...args) => {
-    argList.push(args);
-  };
-  render(<UserForm onUserAdd={callback} />);
+  const mock = jest.fn();
+
+  render(<UserForm onUserAdd={mock} />);
 
   const [nameInput, emailInput] = screen.getAllByRole("textbox");
 
@@ -31,8 +29,8 @@ test("it calls onUserAdd when the form is submitted", () => {
 
   userEvent.click(button);
 
-  expect(argList).toHaveLength(1);
-  expect(argList[0][0]).toEqual({
+  expect(mock).toHaveBeenCalled();
+  expect(mock).toHaveBeenCalledWith({
     name: "Michael",
     email: "michael@hotmail.com",
   });
