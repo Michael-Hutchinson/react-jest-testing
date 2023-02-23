@@ -1,13 +1,19 @@
 import { render, screen, within } from "@testing-library/react";
 import UserList from "./UserList";
 
-test("render one row per user", () => {
+function renderComponent() {
   const users = [
     { name: "Jane", email: "jane@hotmail.com" },
     { name: "Sam", email: "sam@hotmail.com" },
   ];
 
   render(<UserList users={users} />);
+
+  return { users };
+}
+
+test("render one row per user", () => {
+  renderComponent();
 
   const rows = within(screen.getByTestId("users")).getAllByRole("row");
 
@@ -29,12 +35,7 @@ test("render one row per user without using data-testid", () => {
 });
 
 test("render the email and name of each users", () => {
-  const users = [
-    { name: "Jane", email: "jane@hotmail.com" },
-    { name: "Sam", email: "sam@hotmail.com" },
-  ];
-
-  render(<UserList users={users} />);
+  const { users } = renderComponent();
 
   for (let user of users) {
     const name = screen.getByRole("cell", { name: user.name });
